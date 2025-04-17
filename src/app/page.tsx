@@ -50,23 +50,33 @@ export default function Home() {
   const footerImageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Set up service animations
-    const cleanupServiceAnimations = setupServiceAnimations(
-      servicesSectionRef as React.RefObject<HTMLElement>
+    // Set up Intersection Observer for reveal animations
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Add class to make element visible when it enters viewport
+            entry.target.classList.add("revealed");
+            // Unobserve after animation is triggered
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        root: null,
+        threshold: 0.1, // Trigger when 10% of element is visible
+        rootMargin: "-50px", // Slightly before element enters viewport
+      }
     );
 
-    // Set up parallax effects
-    const cleanupParallaxEffects = setupParallaxEffects({
-      heroSection: heroSectionRef.current,
-      heroImage: heroImageRef.current,
-      footerSection: footerSectionRef.current,
-      footerImage: footerImageRef.current,
-      serviceItems: document.querySelectorAll(".service-image-wrapper img"),
+    // Observe all elements with reveal-element class
+    document.querySelectorAll(".reveal-element").forEach((el) => {
+      observer.observe(el);
     });
 
     return () => {
-      cleanupServiceAnimations();
-      cleanupParallaxEffects();
+      // Clean up observer
+      observer.disconnect();
     };
   }, []);
 
@@ -157,23 +167,24 @@ export default function Home() {
       >
         <h1
           ref={headingRef}
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-8 text-center"
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-8 text-center opacity-0 translate-y-8 transition-all duration-700 ease-out reveal-element"
         >
           All Services
         </h1>
         <p
           ref={subheadingRef}
-          className="text-sm sm:text-base md:text-xl text-gray-300 text-center mb-16 max-w-3xl mx-auto"
+          className="text-sm sm:text-base md:text-xl text-gray-300 text-center mb-16 max-w-3xl mx-auto opacity-0 translate-y-6 transition-all duration-700 delay-150 ease-out reveal-element"
         >
           Explore the range of solutions we offer to elevate your projects and
           transform your digital presence with our expertise.
         </p>
 
         <div className="space-y-20 md:space-y-24 lg:space-y-32 max-w-7xl mx-auto">
-          {servicesData.map((service) => (
+          {servicesData.map((service, index) => (
             <div
               key={service.id}
-              className="service-item-container flex flex-col md:flex-row items-center gap-8 md:gap-12 border-t border-white/20 pt-10 md:pt-16"
+              className={`service-item-container flex flex-col md:flex-row items-center gap-8 md:gap-12 border-t border-white/20 pt-10 md:pt-16 opacity-0 translate-y-12 transition-all duration-700 ease-out reveal-element`}
+              style={{ transitionDelay: `${index * 100}ms` }}
             >
               <div className="service-content-wrapper flex-1 md:w-2/5 py-4 order-2 md:order-1">
                 <h2 className="service-title text-xl sm:text-2xl md:text-3xl lg:text-5xl font-bold mb-4 md:mb-6">
@@ -190,7 +201,7 @@ export default function Home() {
                   alt={service.altText}
                   width={800}
                   height={500}
-                  className="object-cover w-full h-full"
+                  className="object-cover w-full h-full scale-105 hover:scale-100 transition-transform duration-700"
                   loading={service.id === 1 ? "eager" : "lazy"}
                 />
               </div>
