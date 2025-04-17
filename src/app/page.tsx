@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { setupServiceAnimations, setupParallaxEffects } from "@/utils/pageUtil";
+import VerticalCutReveal from "@/fancy/components/text/vertical-cut-reveal";
 
 interface ServiceItem {
   id: number;
@@ -81,21 +82,70 @@ export default function Home() {
           ref={heroImageRef}
           className="parallax-element absolute inset-0 scale-[1.15]"
           style={{
-            backgroundImage: "url('/assets/images/hero.jpg')",
+            backgroundImage:
+              "linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.63)), url('/assets/images/hero.jpg')",
             backgroundSize: "cover",
             backgroundPosition: "center",
             transform: "scale(1.05)", // Slightly larger scale to prevent blur edges
-            // Remove the static blur filter from here as it will be controlled by GSAP
+            // Dark overlay is now part of the background image
           }}
         ></div>
         <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
           <div className="text-center px-6">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[12rem] font-bold mb-6 transform translate-y-8 opacity-0 hero-title">
-              MAXSTUDIOS
-            </h1>
-            <p className="text-xl md:text-2xl max-w-3xl mx-auto transform translate-y-8 opacity-0 hero-subtitle">
+            <div className="flex justify-center items-baseline mb-6">
+              <VerticalCutReveal
+                containerClassName="text-6xl text-[#ff5941] sm:text-7xl md:text-8xl lg:text-[16rem] xl:text-[18rem] font-bold inline-block"
+                splitBy="characters"
+                staggerDuration={0.05}
+                transition={{
+                  type: "spring",
+                  stiffness: 190,
+                  damping: 22,
+                }}
+              >
+                MAX
+              </VerticalCutReveal>
+              <VerticalCutReveal
+                containerClassName="font-light serif text-white text-6xl sm:text-7xl md:text-8xl lg:text-[16rem] xl:text-[18rem] inline-block"
+                splitBy="characters"
+                staggerDuration={0.05}
+                transition={{
+                  type: "spring",
+                  stiffness: 190,
+                  damping: 22,
+                  delay: 0.2, // Start after MAX
+                }}
+              >
+                studios
+              </VerticalCutReveal>
+              <VerticalCutReveal
+                containerClassName="text-[#ff5941] text-6xl sm:text-7xl md:text-8xl lg:text-[16rem] xl:text-[18rem] font-bold inline-block"
+                splitBy="characters"
+                staggerDuration={0.05}
+                transition={{
+                  type: "spring",
+                  stiffness: 190,
+                  damping: 22,
+                  delay: 0.6, // Start after studios
+                }}
+              >
+                .
+              </VerticalCutReveal>
+            </div>
+
+            <VerticalCutReveal
+              containerClassName="text-2xl sm:text-3xl md:text-4xl max-w-5xl mx-auto block"
+              splitBy="words"
+              staggerDuration={0.04}
+              transition={{
+                type: "spring",
+                stiffness: 160,
+                damping: 26,
+                delay: 0.8, // Start after the title animation
+              }}
+            >
               Creating digital experiences that inspire and elevate your brand
-            </p>
+            </VerticalCutReveal>
           </div>
         </div>
       </section>

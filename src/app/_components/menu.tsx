@@ -6,7 +6,6 @@ import {
   initMenuAnimations,
   animateMenuToggle,
   playIntroAnimation,
-  playWelcomeAnimation, // New import for welcome animation
 } from "@/utils/menuUtil";
 
 export default function Menu() {
@@ -14,8 +13,6 @@ export default function Menu() {
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const menuDialogRef = useRef<HTMLDivElement>(null);
   const menuItemsRef = useRef<HTMLDivElement>(null);
-  const welcomeOverlayRef = useRef<HTMLDivElement>(null); // New ref for welcome overlay
-  const hasAnimatedRef = useRef(false);
 
   const navItems = [
     { name: "Home", href: "/" },
@@ -25,34 +22,6 @@ export default function Menu() {
   ];
 
   // Init animations and play welcome/intro sequence on component mount
-  useEffect(() => {
-    const cleanup = initMenuAnimations({
-      menuButton: menuButtonRef.current,
-      menuDialog: menuDialogRef.current,
-      menuItems: menuItemsRef.current,
-    });
-
-    // Play welcome animation followed by intro animation only once
-    if (!hasAnimatedRef.current) {
-      // Short delay to ensure elements are fully mounted
-      const timer = setTimeout(() => {
-        playWelcomeAnimation({
-          welcomeOverlay: welcomeOverlayRef.current,
-          menuButton: menuButtonRef.current,
-          menuDialog: menuDialogRef.current,
-          menuItems: menuItemsRef.current,
-        });
-        hasAnimatedRef.current = true;
-      }, 800);
-
-      return () => {
-        clearTimeout(timer);
-        cleanup();
-      };
-    }
-
-    return cleanup;
-  }, []);
 
   const toggleMenu = () => {
     const newState = !isMenuOpen;
@@ -69,17 +38,6 @@ export default function Menu() {
   return (
     <>
       {/* Welcome Overlay */}
-      <div
-        ref={welcomeOverlayRef}
-        className="welcome-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-3xl"
-      >
-        <h1
-          className="welcome-text text-white font-bold text-center"
-          style={{ fontSize: "14vw" }}
-        >
-          MAXSTUDIOS
-        </h1>
-      </div>
 
       {/* Pill-shaped floating menu button */}
       <div className="fixed top-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center">
