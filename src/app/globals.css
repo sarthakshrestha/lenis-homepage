@@ -1,15 +1,102 @@
 @import "tailwindcss";
 
+/* Define @font-face rules for each weight of the Standerd font */
+@font-face {
+  font-family: "Standerd";
+  src: url("/assets/fonts/Standerd/Standerd-Thin.woff2") format("woff2"),
+    url("/assets/fonts/Standerd/Standerd-Thin.woff") format("woff");
+  font-weight: 100; /* Thin */
+  font-style: normal;
+  font-display: swap; /* Optional: Improves perceived performance */
+}
+
+@font-face {
+  font-family: "Standerd";
+  src: url("/assets/fonts/Standerd/Standerd-ExtraLight.woff2") format("woff2"),
+    url("/assets/fonts/Standerd/Standerd-ExtraLight.woff") format("woff");
+  font-weight: 200; /* Extra Light */
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Standerd";
+  src: url("/assets/fonts/Standerd/Standerd-Light.woff2") format("woff2"),
+    url("/assets/fonts/Standerd/Standerd-Light.woff") format("woff");
+  font-weight: 300; /* Light */
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Standerd";
+  src: url("/assets/fonts/Standerd/Standerd-Regular.woff2") format("woff2"),
+    url("/assets/fonts/Standerd/Standerd-Regular.woff") format("woff");
+  font-weight: 400; /* Regular */
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Standerd";
+  src: url("/assets/fonts/Standerd/Standerd-Medium.woff2") format("woff2"),
+    url("/assets/fonts/Standerd/Standerd-Medium.woff") format("woff");
+  font-weight: 500; /* Medium */
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Standerd";
+  src: url("/assets/fonts/Standerd/Standerd-SemiBold.woff2") format("woff2"),
+    url("/assets/fonts/Standerd/Standerd-SemiBold.woff") format("woff");
+  font-weight: 600; /* Semi Bold */
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Standerd";
+  src: url("/assets/fonts/Standerd/Standerd-Bold.woff2") format("woff2"),
+    url("/assets/fonts/Standerd/Standerd-Bold.woff") format("woff");
+  font-weight: 700; /* Bold */
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Standerd";
+  src: url("/assets/fonts/Standerd/Standerd-ExtraBold.woff2") format("woff2"),
+    url("/assets/fonts/Standerd/Standerd-ExtraBold.woff") format("woff");
+  font-weight: 800; /* Extra Bold */
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Standerd";
+  src: url("/assets/fonts/Standerd/Standerd-Black.woff2") format("woff2"),
+    url("/assets/fonts/Standerd/Standerd-Black.woff") format("woff");
+  font-weight: 900; /* Black */
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  /* Define a CSS variable for the Standerd font family */
+  --font-standerd: "Standerd", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+    sans-serif; /* Added fallbacks */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Update --font-sans to use the Standerd variable */
+  --font-sans: var(--font-standerd);
+  --font-mono: var(--font-geist-mono); /* Keep mono if needed */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -20,7 +107,31 @@
 }
 
 body {
-  background: var(--background);
+  background: #0a0a0a;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /* Apply the Standerd font family to the body */
+  font-family: var(--font-standerd);
+  /* Set a default font weight (e.g., Regular or Medium) */
+  font-weight: 400; /* Changed default to Regular (400) - adjust as needed */
 }
+
+/* Example: Apply different weights to heading tags using the new font */
+/* You might want to adjust these weights based on the Standerd font's appearance */
+h1 {
+  font-weight: 700; /* Bold */
+}
+
+h2 {
+  font-weight: 600; /* Semi Bold */
+}
+
+h3 {
+  font-weight: 500; /* Medium */
+}
+
+strong,
+b {
+  font-weight: 700; /* Bold for strong/bold tags */
+}
+
+/* Add more rules as needed for other elements or weights */

@@ -1,103 +1,181 @@
+"use client";
+
 import Image from "next/image";
+import { useEffect, useRef } from "react";
+import { setupServiceAnimations, setupParallaxEffects } from "@/utils/pageUtil";
+
+interface ServiceItem {
+  id: number;
+  title: string;
+  description: string;
+  imageUrl: string;
+  altText: string;
+}
+
+const servicesData: ServiceItem[] = [
+  {
+    id: 1,
+    title: "Web Development",
+    description:
+      "Crafting responsive and performant websites tailored to your needs. Our expert team combines cutting-edge technologies with user-centered design principles to deliver web solutions that drive engagement and business growth.",
+    imageUrl: "/assets/images/img1.jpg",
+    altText: "Abstract digital art representing web development",
+  },
+  {
+    id: 2,
+    title: "UI/UX Design",
+    description:
+      "Designing intuitive and engaging user interfaces for seamless experiences. We transform complex user requirements into elegant design solutions that delight users while meeting business objectives through meticulous research and creative innovation.",
+    imageUrl: "/assets/images/img2.jpg",
+    altText: "Wireframes and design elements indicating UI/UX design",
+  },
+  {
+    id: 3,
+    title: "Cloud Solutions",
+    description:
+      "Leveraging cloud platforms for scalable and reliable infrastructure. Our cloud expertise enables businesses to modernize operations, improve security, and optimize costs while ensuring maximum availability and performance of critical applications.",
+    imageUrl: "/assets/images/img3.jpg",
+    altText: "Stylized cloud graphic symbolizing cloud solutions",
+  },
+];
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const servicesSectionRef = useRef<HTMLElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const subheadingRef = useRef<HTMLParagraphElement>(null);
+  const heroSectionRef = useRef<HTMLElement>(null);
+  const heroImageRef = useRef<HTMLDivElement>(null);
+  const footerSectionRef = useRef<HTMLElement>(null);
+  const footerImageRef = useRef<HTMLDivElement>(null);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  useEffect(() => {
+    // Set up service animations
+    const cleanupServiceAnimations = setupServiceAnimations(
+      servicesSectionRef as React.RefObject<HTMLElement>
+    );
+
+    // Set up parallax effects
+    const cleanupParallaxEffects = setupParallaxEffects({
+      heroSection: heroSectionRef.current,
+      heroImage: heroImageRef.current,
+      footerSection: footerSectionRef.current,
+      footerImage: footerImageRef.current,
+      serviceItems: document.querySelectorAll(".service-image-wrapper img"),
+    });
+
+    return () => {
+      cleanupServiceAnimations();
+      cleanupParallaxEffects();
+    };
+  }, []);
+
+  return (
+    <main className="w-full text-white">
+      {/* Hero Section with Parallax */}
+      <section
+        ref={heroSectionRef}
+        className="w-full h-screen overflow-hidden relative"
+        aria-label="Hero Section"
+      >
+        <div
+          ref={heroImageRef}
+          className="parallax-element absolute inset-0 scale-[1.15]"
+          style={{
+            backgroundImage: "url('/assets/images/hero.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            filter: "blur(5px)",
+            transform: "scale(1.05)", // Slightly larger scale to prevent blur edges
+          }}
+        ></div>
+        <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+          <div className="text-center px-6">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[12rem] font-bold mb-6 transform translate-y-8 opacity-0 hero-title">
+              MAXSTUDIOS
+            </h1>
+            <p className="text-xl md:text-2xl max-w-3xl mx-auto transform translate-y-8 opacity-0 hero-subtitle">
+              Creating digital experiences that inspire and elevate your brand
+            </p>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+      </section>
+
+      {/* Services Section */}
+      <section
+        ref={servicesSectionRef}
+        className="bg-zinc-950 py-16 sm:py-20 md:py-24 px-4 sm:px-8 md:px-12"
+      >
+        <h1
+          ref={headingRef}
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 lg:mb-8 text-center text-reveal"
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          All Services
+        </h1>
+        <p
+          ref={subheadingRef}
+          className="text-sm sm:text-base md:text-3xl xl:text-3xl text-gray-300 text-center mb-12 sm:mb-16 md:mb-20 lg:mb-24 max-w-4xl mx-auto text-reveal"
         >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+          Explore the range of solutions we offer to elevate your projects and
+          transform your digital presence with our expertise.
+        </p>
+
+        <div className="space-y-16 sm:space-y-20 md:space-y-24 lg:space-y-32 xl:space-y-40 max-w-7xl mx-auto">
+          {servicesData.map((service) => (
+            <div
+              key={service.id}
+              className="service-item-container flex flex-col md:flex-row items-center gap-6 sm:gap-8 md:gap-10 lg:gap-16 border-t border-white/20 pt-8 sm:pt-10 md:pt-16 lg:pt-20 xl:pt-24"
+            >
+              <div className="service-content-wrapper flex-1 md:flex-[3] flex flex-col justify-center py-2 md:py-4 order-2 md:order-1">
+                <div>
+                  <h2 className="service-title text-xl sm:text-2xl md:text-3xl lg:text-6xl xl:text-6xl font-bold mb-3 sm:mb-4 md:mb-5 lg:mb-6 text-reveal">
+                    {service.title}
+                  </h2>
+                  <p className="service-desc text-sm sm:text-base md:text-xl leading-relaxed text-gray-300 mb-4 sm:mb-5 md:mb-6 max-w-xl text-reveal">
+                    {service.description}
+                  </p>
+                </div>
+              </div>
+
+              <div className="service-image-wrapper flex-1 md:flex-[4] w-full md:w-auto h-[250px] sm:h-[280px] md:h-[320px] lg:h-[360px] xl:h-[400px] rounded-lg overflow-hidden order-1 md:order-2 relative">
+                <Image
+                  src={service.imageUrl}
+                  alt={service.altText}
+                  fill={true}
+                  className="object-cover parallax-image"
+                  priority={service.id === 1}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Footer Image with Parallax */}
+      <section
+        ref={footerSectionRef}
+        className="w-full h-screen relative overflow-hidden"
+        aria-label="Footer Image"
+      >
+        <div
+          ref={footerImageRef}
+          className="parallax-element absolute inset-0 scale-[1.15]"
+          style={{
+            backgroundImage: "url('/assets/images/footer.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        ></div>
+        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+          <div className="text-center px-6">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 transform translate-y-8 opacity-0 footer-title">
+              Let's Create Something Amazing
+            </h2>
+            <a className="inline-block cursor-pointer px-8 py-3 bg-[#ff5941] text-white rounded-full text-lg font-medium hover:bg-[#ff3921] transition-colors transform translate-y-8 opacity-0 footer-cta">
+              Get In Touch
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
   );
 }
