@@ -162,13 +162,19 @@ export const setupParallaxEffects = (elements: ParallaxElements) => {
   });
 
   // Function to update parallax positions
+  // Function to update parallax positions
   const updateParallax = () => {
     // Get hero section progress
     if (heroParallax.progress !== undefined) {
       const heroProgress = heroParallax.progress;
+
+      // Calculate blur based on scroll progress - starts at 0, increases to 15px
+      const blurAmount = Math.min(15, heroProgress * 25);
+
       gsap.set(heroImage, {
         y: heroProgress * 150, // Move down as we scroll
         scale: 1.15 - heroProgress * 0.15, // Slightly reduce scale
+        filter: `blur(${blurAmount}px)`, // Dynamic blur effect
       });
     }
 
@@ -181,7 +187,6 @@ export const setupParallaxEffects = (elements: ParallaxElements) => {
       });
     }
   };
-
   // Apply parallax to service images
   if (serviceItems && serviceItems.length > 0) {
     serviceItems.forEach((img, index) => {
@@ -204,17 +209,28 @@ export const setupParallaxEffects = (elements: ParallaxElements) => {
   }
 
   // Add event listener for scroll to update parallax
+  // Add event listener for refresh
   ScrollTrigger.addEventListener("refresh", updateParallax);
-  ScrollTrigger.addEventListener("update", updateParallax);
+
+  // Use GSAP ticker for continuous updates
+  gsap.ticker.add(updateParallax);
 
   // Initial call to set positions
   updateParallax();
 
   // Return cleanup function
+  // Return cleanup function
   return () => {
+    // Only remove the valid event type
     ScrollTrigger.removeEventListener("refresh", updateParallax);
-    ScrollTrigger.removeEventListener("update", updateParallax);
+
+    // For updating on scroll, we need to use the ticker instead
+    gsap.ticker.remove(updateParallax);
+
+    // Clean up animations
     animations.forEach((anim) => anim.kill());
+
+    // Kill ScrollTrigger instances
     if (heroParallax) heroParallax.kill();
     if (footerParallax) footerParallax.kill();
   };

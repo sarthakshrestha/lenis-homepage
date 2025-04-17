@@ -84,8 +84,8 @@ export default function Home() {
             backgroundImage: "url('/assets/images/hero.jpg')",
             backgroundSize: "cover",
             backgroundPosition: "center",
-            filter: "blur(5px)",
             transform: "scale(1.05)", // Slightly larger scale to prevent blur edges
+            // Remove the static blur filter from here as it will be controlled by GSAP
           }}
         ></div>
         <div className="absolute inset-0 bg-black/30 flex items-center justify-center">

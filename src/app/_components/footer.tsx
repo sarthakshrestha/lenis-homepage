@@ -27,11 +27,6 @@ const Footer: React.FC = () => {
     });
 
     // Set initial states for links
-    gsap.set(links?.querySelectorAll("li"), {
-      y: 20,
-      opacity: 0,
-    });
-
     // Create the footer reveal animation
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -51,17 +46,6 @@ const Footer: React.FC = () => {
     });
 
     // Staggered links reveal
-    tl.to(
-      links?.querySelectorAll("li"),
-      {
-        y: 0,
-        opacity: 1,
-        stagger: 0.08,
-        duration: 0.6,
-        ease: "power2.out",
-      },
-      "-=0.4"
-    );
 
     // Cleanup function
     return () => {
