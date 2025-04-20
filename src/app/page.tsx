@@ -50,27 +50,6 @@ export default function Home() {
   const footerSectionRef = useRef<HTMLElement>(null);
   const footerImageRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    // Set up service animations
-    const cleanupServiceAnimations = setupServiceAnimations(
-      servicesSectionRef as React.RefObject<HTMLElement>
-    );
-
-    // Set up parallax effects
-    const cleanupParallaxEffects = setupParallaxEffects({
-      heroSection: heroSectionRef.current,
-      heroImage: heroImageRef.current,
-      footerSection: footerSectionRef.current,
-      footerImage: footerImageRef.current,
-      serviceItems: document.querySelectorAll(".service-image-wrapper img"),
-    });
-
-    return () => {
-      cleanupServiceAnimations();
-      cleanupParallaxEffects();
-    };
-  }, []);
-
   return (
     <main className="w-full text-white">
       {/* Hero Section with Parallax */}
