@@ -242,3 +242,11 @@ b {
     @apply bg-background text-foreground;
   }
 }
+
+.animate-on-scroll.opacity-100 {
+  opacity: 1;
+}
+
+.animate-on-scroll.translate-y-0 {
+  transform: translateY(0);
+}
